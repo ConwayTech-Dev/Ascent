@@ -11,8 +11,13 @@ import platform
 import random
 import math
 import asyncio
+from dotenv import find_dotenv, load_dotenv
 
-loginToken = os.environ['token']
+dotenv_path = find_dotenv("token")
+
+load_dotenv(dotenv_path)
+
+loginToken = os.getenv("")
 
 intents = discord.Intents.default()
 intents.members = True
