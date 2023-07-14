@@ -86,10 +86,10 @@ randQuotes = [
 @bot.event
 async def on_ready():
   print("Ascent is now active.")
-  await bot.change_presence(status=discord.Status.do_not_disturb,
+  await bot.change_presence(status=discord.Status.online,
                             activity=discord.Activity(
                               type=discord.ActivityType.watching,
-                              name="homo sapiens around the world"))
+                              name="for Slash Commands"))
   print("Use Slash Commands to start!")
 
 
