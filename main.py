@@ -228,8 +228,8 @@ async def poke(ctx, member: discord.Member = None):
     )
 
 
-@bot.slash_command(aliases=["yt_thumbnail", "youtubethumbnail"])
-async def youtube_thumbnail(ctx, video_id):
+@bot.slash_command(description="Find a YouTube video's thumbnail.")
+async def thumbnail(ctx, video_id):
   await ctx.reply(
     "https://img.youtube.com/vi/" + video_id + "/maxresdefault.jpg" +
     f"\nThere's that YouTube thumbnail for you, {ctx.author.mention}")
