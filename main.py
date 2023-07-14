@@ -119,7 +119,7 @@ async def version(ctx):
   await ctx.reply(embed=vembed)
 
 
-@bot.slash_command(name="ping", description="Find the Ascent's ping!")
+@bot.slash_command(name="ping", description="View Ascent's ping (latency).")
 async def ping(ctx):
   pembed = discord.Embed(title="PONG!",
                          description="Check out Ascent's bot ping!.",
@@ -136,7 +136,7 @@ async def ping(ctx):
 
 
 # quote command
-@bot.slash_command(name="quote", description="Gets a random quote!")
+@bot.slash_command(name="quote", description="Responds with a random quote.")
 async def quote(ctx):
   async with ctx.typing:
     asyncio.sleep(1.5)
@@ -144,7 +144,7 @@ async def quote(ctx):
 
 
 # ID command
-@bot.slash_command(description="Get someone's ID!")
+@bot.slash_command(description="Find a user's Discord ID.")
 async def id(ctx, *, member: discord.Member):
   async with ctx.typing():
     await asyncio.sleep(1)
@@ -152,7 +152,7 @@ async def id(ctx, *, member: discord.Member):
 
 
 # Gets a server's icon!
-@bot.slash_command(description="Get a server's icon!")
+@bot.slash_command(description="Find a server's icon.")
 async def servericon(ctx):
   await ctx.send(f"Here's the server icon for {ctx.guild.name}...")
   async with ctx.typing():
@@ -161,9 +161,7 @@ async def servericon(ctx):
 
 
 # Lenth Command
-@bot.slash_command(
-  description=
-  "Allows you to figure out the length of your message. SO helpful...")
+@bot.slash_command(description="View the length of a message.")
 async def length(ctx):
   await ctx.reply(
     'Your message is {} characters long.'.format(len(ctx.message.content) - 8))
