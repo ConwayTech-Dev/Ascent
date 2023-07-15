@@ -235,14 +235,15 @@ async def thumbnail(ctx, video_id):
     f"\nThere's that YouTube thumbnail for you, {ctx.author.mention}")
 
 
-@bot.slash_command()
+@bot.slash_command(description="Softban a user in a Discord server, deleting their messages and kicking them but not banning them.")
+@commands.guild_only()
 async def softban(ctx, member: discord.Member, *, reason=None):
   await member.ban(reason=reason)
   await member.unban()
-  await ctx.send(f"Done. We've SOFTBANNED {member}, successfully!")
+  await ctx.send(f"{member} has sucessfully been softbanned.")
 
 
-@bot.slash_command()
+@bot.slash_command(description="Force Ascent to repeat whatever text you want it to repeat.")
 async def repeat(
     ctx,
     times: int,
@@ -296,13 +297,12 @@ async def userinfo(ctx):
 
 # creates a text channel
 @bot.slash_command(
-  aliases=["create_text_channel", "new_text_channel", "newtextchannel"],
-  help="Make a new text channel (Guilds ONLY)!")
+  description="Creates a new text channel.")
 @commands.guild_only()
 async def createtextchannel(ctx, channelname):
   await ctx.guild.create_text_channel(channelname)
   await ctx.send(
-    f"We've successfully created a channel that's called '{channelname}'... check it out!"
+    f"A channel called {channelname} has successfully been created."
   )
 
 
@@ -479,7 +479,7 @@ async def coinflip(ctx):
 
 
 # Emoji Command
-@bot.slash_command(description="Get info on an emoji")
+@bot.slash_command(description="Gets info on the specified emoji.")
 async def emoji_info(ctx, emoji: discord.Emoji = None):
   if not emoji:
     await ctx.invoke(bot.get_command("help"), entity="emoji_info")
@@ -520,7 +520,7 @@ async def emoji_info(ctx, emoji: discord.Emoji = None):
 
 
 # random animals...
-@bot.slash_command(description="Pull from the internet a random dog pic!")
+@bot.slash_command(description="Find a random dog pic on the internet.")
 async def dog(ctx):
   async with ctx.typing():
     await asyncio.sleep(4)
@@ -538,7 +538,7 @@ async def dog(ctx):
         await ctx.reply(embed=dogembed)
 
 
-@bot.slash_command(description="Send a random picture of a cat!")
+@bot.slash_command(description="Find a random cat pic on the internet.")
 async def cat(ctx):
   async with ctx.typing():
     await asyncio.sleep(4)
@@ -625,12 +625,12 @@ async def server_count(ctx):
     f"Ascent is currently online and in {len(bot.guilds)} servers.")
 
 
-@bot.slash_command(description="Send the lenny face in chat!")
-async def lenny_face(ctx):
+@bot.slash_command(description="Sends the lenny face in chat.")
+async def lennyface(ctx):
   await ctx.reply("( ͡° ͜ʖ ͡°)")
 
 
-@bot.slash_command(description="Send the invisible character in chat!")
+@bot.slash_command(description="Send an invisible character in chat.")
 async def invisible_character(ctx):
   async with ctx.typing():
     await asyncio.sleep(1)
@@ -638,40 +638,37 @@ async def invisible_character(ctx):
 
 
 # KICK command
-@bot.slash_command()
+@bot.slash_command(description="Kicks a user in a Discord server.")
 @commands.guild_only()
 @commands.has_permissions(kick_members=True)
 async def kick(ctx, member: discord.Member, *, reason=None):
   await member.kick(reason=reason)
   await ctx.reply(
-    f'{member} has been kicked by {ctx.message.author} for reason "{reason}"')
+    f'{member} has been kicked by {ctx.message.author} for reason "{reason}"'.)
 
 
 # BAN command
-@bot.slash_command()
+@bot.slash_command(description="Bans a user in a Discord server.")
 @commands.guild_only()
 @commands.has_permissions(ban_members=True)
 async def ban(ctx, member: discord.Member, *, reason=None):
   await member.ban(reason=reason)
   await ctx.send(
-    f'{member} has been BANNED! Rut row, I wonder why. Anyways, in order to get that user back, open Server Settings and UNBAN that user.'
+    f'{member} has been BANNED for reason "{reason}".'
   )
 
 
 # server purging + clearing msgs
-@bot.slash_command(aliases=["purge", "delete_msgs"])
+@bot.slash_command(description="Purges a various amount of messages in a Discord server")
 @commands.guild_only()
 @commands.has_permissions(manage_messages=True)
 async def clear(ctx, amount=3):
   await ctx.channel.purge(limit=amount)
   await ctx.send(
-    f"```Rightio, {amount} message(s) have been DELETED... forever.```")
+    f"```{amount} message(s) have been DELETED.```")
 
-
-@bot.slash_command(name="guildinfo",
-                   aliases=["serverinfo"],
-                   help="Find info about the server!")
-async def guildinfo(ctx):
+@bot.slash_command(description="Finds information about the current Discord server.")
+async def serverinfo(ctx):
   giembed = discord.Embed(title=f"{ctx.guild.name}",
                           description="Server Data/Info",
                           color=discord.Color.blue())
@@ -688,9 +685,9 @@ async def guildinfo(ctx):
   await ctx.send(embed=giembed)
 
 
-@bot.slash_command(help="I say what you say!")
+@bot.slash_command(description="Echos whatever you want Ascent to echo.")
 async def echo(ctx, *, echo):
-  await ctx.send(f"I repeat...\n\n{echo}")
+  await ctx.reply(f"Under the request of {ctx.user}, {echo})
 
 
 @bot.slash_command()
@@ -712,7 +709,7 @@ async def help_secrets(ctx):
 
 
 # YT command
-@bot.slash_command(aliases=["searchyt"])
+@bot.slash_command(description="Searches YouTube at your request.")
 async def youtube(ctx, *, search):
   query_string = urllib.parse.urlencode({'search_query': search})
   html_content = urllib.request.urlopen('https://www.youtube.com/results?' +
@@ -723,14 +720,14 @@ async def youtube(ctx, *, search):
   await ctx.send('http://www.youtube.com/watch?v=' + search_results[0])
 
 
-@bot.slash_command(aliases=["useravatar", "user_avatar", "get_the_avatar_of"],
-                   usage="bruh avatar [that user you want the avatar from]")
+@bot.slash_command()
 async def avatar(ctx, member: discord.Member):
   await ctx.channel.send("Eh, the avatar? OK, getting it...")
   async with ctx.typing():
     await asyncio.sleep(1)
   await ctx.channel.send(f"**{member}**'s current Discord profile picture:")
-  userAvatar = member.avatar_url
+
+  userAvatar = ctx.member.avatar_url
   await ctx.channel.send(userAvatar)
 
 
