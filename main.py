@@ -644,7 +644,7 @@ async def invisible_character(ctx):
 async def kick(ctx, member: discord.Member, *, reason=None):
   await member.kick(reason=reason)
   await ctx.reply(
-    f'{member} has been kicked by {ctx.message.author} for reason "{reason}"'.)
+    f'{member} has been kicked by {ctx.message.author} for reason "{reason}"')
 
 
 # BAN command
@@ -687,7 +687,7 @@ async def serverinfo(ctx):
 
 @bot.slash_command(description="Echos whatever you want Ascent to echo.")
 async def echo(ctx, *, echo):
-  await ctx.reply(f"Under the request of {ctx.user}, {echo})
+  await ctx.reply(f"Under the request of {ctx.user}, {echo}")
 
 
 @bot.slash_command()
@@ -719,17 +719,9 @@ async def youtube(ctx, *, search):
 
   await ctx.send('http://www.youtube.com/watch?v=' + search_results[0])
 
-
 @bot.slash_command()
 async def avatar(ctx, member: discord.Member):
-  await ctx.channel.send("Eh, the avatar? OK, getting it...")
-  async with ctx.typing():
-    await asyncio.sleep(1)
-  await ctx.channel.send(f"**{member}**'s current Discord profile picture:")
-
-  userAvatar = ctx.member.avatar_url
-  await ctx.channel.send(userAvatar)
-
+  await ctx.send(f"{member}'s Discord avatar:\n{member.avatar.url}")
 
 # Slowmode Setting
 @bot.slash_command()
